@@ -22,6 +22,11 @@ class ArticleInline(admin.TabularInline):
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'published_at']
+    list_display = ['title', 'text_column', 'published_at']
     inlines = [ArticleInline]
+
+    @admin.display(description='Содержание', ordering='text')
+    def text_column(self, obj):
+        return obj.text[:100] + '...' if len(obj.text) > 100 else ''
+
     
